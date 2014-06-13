@@ -8,7 +8,12 @@
 
 #import "MMProgressHUDOverlayView.h"
 
-@interface MMProgressHUDOverlayView()
+#import "UIView+MMSnapshot.h"
+#import "UIImage+ImageEffects.h"
+
+@interface MMProgressHUDOverlayView() {
+    UIImageView *_blurImageView;
+}
 
 @property (nonatomic) CGGradientRef gradientRef;
 
@@ -36,8 +41,12 @@
 - (instancetype)initWithFrame:(CGRect)frame overlayMode:(MMProgressHUDWindowOverlayMode)overlayMode {
     self = [super initWithFrame:frame];
     if (self) {
-        _overlayMode = overlayMode;
-        
+        _blurImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        [_blurImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self addSubview:_blurImageView];
+
+        [self setOverlayMode:overlayMode];
+
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         CGFloat r = 0/255.0;
         CGFloat g = 0/255.0;
@@ -56,21 +65,22 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-    [super drawRect:rect];
+//    [super drawRect:rect];
     
     switch (self.overlayMode) {
         case MMProgressHUDWindowOverlayModeGradient:
             [self _drawRadialGradientInRect:rect];
             break;
-        /*case MMProgressHUDWindowOverlayModeBlur:
-//            NSAssert(NO, @"Blur overlay not yet implemented!");
-            break;*/
-        case MMProgressHUDWindowOverlayModeNone:
-            //draw nothing
-            break;
-        case MMProgressHUDWindowOverlayModeLinear:{
+
+        case MMProgressHUDWindowOverlayModeLinear:
             [self _drawLinearOverlayInRect:rect];
-        }
+            break;
+
+        case MMProgressHUDWindowOverlayModeBlur:
+            [self _renderBlurInRect:rect];
+            break;
+
+        default:
             break;
     }
 }
@@ -153,18 +163,28 @@
     CGContextRestoreGState(context);
 }
 
+- (void)_renderBlurInRect:(CGRect)rect {
+    CGRect renderingRect = [self.window convertRect:rect fromView:self];
+    UIImage *snapshot = [self.window mm_snaphotInRect:renderingRect];
+    UIImage *bluredSnapshot = [snapshot mm_applyBlurWithRadius:1.f tintColor:[UIColor colorWithCGColor:_overlayColor] saturationDeltaFactor:2.0f maskImage:nil];
+
+    [_blurImageView setImage:bluredSnapshot];
+}
+
 - (void)setOverlayMode:(MMProgressHUDWindowOverlayMode)overlayMode {
     if (_overlayMode != overlayMode) {
         _overlayMode = overlayMode;
+
+        [_blurImageView setHidden:_overlayMode != MMProgressHUDWindowOverlayModeBlur];
     }
-    
+
     [self setNeedsDisplay];
 }
 
 - (void)setOverlayColor:(CGColorRef)overlayColor {
     CGColorRelease(_overlayColor);
     _overlayColor = CGColorCreateCopy(overlayColor);
-    
+
     [self _buildGradient];
     [self setNeedsDisplay];
 }
