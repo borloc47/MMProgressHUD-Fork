@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, MMProgressHUDWindowOverlayMode){
     MMProgressHUDWindowOverlayModeNone = -1,
     MMProgressHUDWindowOverlayModeGradient = 0,
     MMProgressHUDWindowOverlayModeLinear,
-    /*MMProgressHUDWindowOverlayModeBlur*/ //iOS 7 only
+    MMProgressHUDWindowOverlayModeBlur NS_ENUM_AVAILABLE_IOS(7_0)
 };
 
 //iOS 7 only
