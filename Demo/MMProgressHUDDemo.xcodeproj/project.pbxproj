@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D6A32121D9C8E269CDCBCF4 /* UIView+MMSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A3C301B70BF508B156D8E /* UIView+MMSnapshot.m */; };
+		1D6A39678ACC626043B9D8EF /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A3D3CE5E9C602D66E68BA /* UIImage+ImageEffects.m */; };
 		463AE40716B105B300A93EED /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 463AE40616B105B300A93EED /* Default-568h@2x.png */; };
 		46A19B37155492E000D65BB8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A19B36155492E000D65BB8 /* UIKit.framework */; };
 		46A19B39155492E000D65BB8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A19B38155492E000D65BB8 /* Foundation.framework */; };
@@ -70,6 +72,10 @@
 		69DA08CC158261EE000DC29E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A19B38155492E000D65BB8 /* Foundation.framework */; };
 		69DA08D2158261EE000DC29E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69DA08D0158261EE000DC29E /* InfoPlist.strings */; };
 		69DA08D5158261EE000DC29E /* MMProgressHUDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 69DA08D4158261EE000DC29E /* MMProgressHUDTests.m */; };
+		AD47B9BC194B20AF001EE4C6 /* UIView+MMSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A3C301B70BF508B156D8E /* UIView+MMSnapshot.m */; };
+		AD47B9BD194B20FB001EE4C6 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A3D3CE5E9C602D66E68BA /* UIImage+ImageEffects.m */; };
+		AD47B9BF194B215C001EE4C6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD47B9BE194B215C001EE4C6 /* Accelerate.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		AD47B9C0194B2161001EE4C6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD47B9BE194B215C001EE4C6 /* Accelerate.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DD29615D17E4BC2700AC6831 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A19B42155492E000D65BB8 /* main.m */; };
 		DD29615E17E4BC2700AC6831 /* MMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A19B46155492E000D65BB8 /* MMAppDelegate.m */; };
 		DD29615F17E4BC2700AC6831 /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A19B49155492E000D65BB8 /* MMViewController.m */; };
@@ -116,6 +122,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1D6A32959D75B50D15985E06 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		1D6A3C301B70BF508B156D8E /* UIView+MMSnapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MMSnapshot.m"; sourceTree = "<group>"; };
+		1D6A3D3CE5E9C602D66E68BA /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		1D6A3E26C7F2C963FDE257D4 /* UIView+MMSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MMSnapshot.h"; sourceTree = "<group>"; };
 		463AE40616B105B300A93EED /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		46A19B32155492E000D65BB8 /* MMProgressHUDDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMProgressHUDDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46A19B36155492E000D65BB8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -176,6 +186,7 @@
 		69DA08D1158261EE000DC29E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		69DA08D4158261EE000DC29E /* MMProgressHUDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMProgressHUDTests.m; sourceTree = "<group>"; };
 		69DA08D6158261EE000DC29E /* LogicTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LogicTests-Prefix.pch"; sourceTree = "<group>"; };
+		AD47B9BE194B215C001EE4C6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		DD29617E17E4BC2700AC6831 /* MMProgressHUDDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMProgressHUDDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDBCC20317C2822A00C3BF8C /* MMLinearProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMLinearProgressView.h; sourceTree = "<group>"; };
 		DDBCC20417C2822A00C3BF8C /* MMLinearProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMLinearProgressView.m; sourceTree = "<group>"; };
@@ -187,6 +198,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD47B9C0194B2161001EE4C6 /* Accelerate.framework in Frameworks */,
 				46A19B6015549B0300D65BB8 /* QuartzCore.framework in Frameworks */,
 				46A19B37155492E000D65BB8 /* UIKit.framework in Frameworks */,
 				46A19B39155492E000D65BB8 /* Foundation.framework in Frameworks */,
@@ -224,6 +236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD47B9BF194B215C001EE4C6 /* Accelerate.framework in Frameworks */,
 				DD29616D17E4BC2700AC6831 /* QuartzCore.framework in Frameworks */,
 				DD29616E17E4BC2700AC6831 /* UIKit.framework in Frameworks */,
 				DD29616F17E4BC2700AC6831 /* Foundation.framework in Frameworks */,
@@ -262,6 +275,7 @@
 		46A19B35155492E000D65BB8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AD47B9BE194B215C001EE4C6 /* Accelerate.framework */,
 				46ACE86917C3C1470075C2A0 /* libOCMock.a */,
 				55F05891159E039800A47983 /* GHUnitIOS.framework */,
 				46A19B3A155492E000D65BB8 /* CoreGraphics.framework */,
@@ -320,6 +334,10 @@
 				5527AF01159CD8200037D67D /* MMProgressHUDViewController.h */,
 				5527AF02159CD8200037D67D /* MMProgressHUDViewController.m */,
 				46F5C8F31800B2F3006C1A6F /* MMProgressHUDCommon.h */,
+				1D6A3D3CE5E9C602D66E68BA /* UIImage+ImageEffects.m */,
+				1D6A32959D75B50D15985E06 /* UIImage+ImageEffects.h */,
+				1D6A3C301B70BF508B156D8E /* UIView+MMSnapshot.m */,
+				1D6A3E26C7F2C963FDE257D4 /* UIView+MMSnapshot.h */,
 			);
 			name = MMProgressHUD;
 			path = ../Source;
@@ -609,6 +627,8 @@
 				55AC1A0515A602A500D64C1F /* MMProgressHUDOverlayView.m in Sources */,
 				DDBCC20617C2822A00C3BF8C /* MMLinearProgressView.m in Sources */,
 				46F3F73F16D1E76700E255A2 /* MMVectorImage.m in Sources */,
+				1D6A39678ACC626043B9D8EF /* UIImage+ImageEffects.m in Sources */,
+				1D6A32121D9C8E269CDCBCF4 /* UIView+MMSnapshot.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,6 +676,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD47B9BC194B20AF001EE4C6 /* UIView+MMSnapshot.m in Sources */,
 				DD29615D17E4BC2700AC6831 /* main.m in Sources */,
 				DD29615E17E4BC2700AC6831 /* MMAppDelegate.m in Sources */,
 				DD29615F17E4BC2700AC6831 /* MMViewController.m in Sources */,
@@ -666,6 +687,7 @@
 				DD29616517E4BC2700AC6831 /* MMProgressHUDViewController.m in Sources */,
 				DD29616617E4BC2700AC6831 /* MMProgressHUD+Animations.m in Sources */,
 				DD29616717E4BC2700AC6831 /* MMProgressHUD+Class.m in Sources */,
+				AD47B9BD194B20FB001EE4C6 /* UIImage+ImageEffects.m in Sources */,
 				DD29616917E4BC2700AC6831 /* MMProgressHUDOverlayView.m in Sources */,
 				DD29616A17E4BC2700AC6831 /* MMLinearProgressView.m in Sources */,
 				DD29616B17E4BC2700AC6831 /* MMVectorImage.m in Sources */,
