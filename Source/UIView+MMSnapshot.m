@@ -9,9 +9,8 @@
 
 @implementation UIView (MMSnapshot)
 
-- (UIImage *)mm_snaphotInRect:(CGRect)rect {
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, self.window.screen.scale);
-
+- (UIImage *)mm_snapshotInRect:(CGRect)rect {
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, [UIScreen mainScreen].scale);
     [self drawViewHierarchyInRect:rect afterScreenUpdates:NO];
 
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
@@ -20,8 +19,8 @@
     return snapshot;
 }
 
-- (UIImage *)mm_snaphot {
-    return [self mm_snaphotInRect:self.bounds];
+- (UIImage *)mm_snapshot {
+    return [self mm_snapshotInRect:self.bounds];
 }
 
 @end

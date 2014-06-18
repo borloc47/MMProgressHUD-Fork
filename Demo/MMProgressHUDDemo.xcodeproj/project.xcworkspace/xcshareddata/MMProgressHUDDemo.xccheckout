@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>26DF34F2-EB5D-4713-837F-32A016859DC6</string>
+	<string>7FE41032-DAB8-4BF3-A558-DAB47E73AF7E</string>
 	<key>IDESourceControlProjectName</key>
 	<string>MMProgressHUDDemo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>AD8BEC46-6469-4696-9DDC-AD18F7D7F138</key>
-		<string>ssh://github.com/mutualmobile/MMProgressHUD.git</string>
+		<key>1DEEA439-EE9D-4026-A754-601BDD33797E</key>
+		<string>ssh://github.com/Yalantis/MMProgressHUD.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Demo/MMProgressHUDDemo.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>AD8BEC46-6469-4696-9DDC-AD18F7D7F138</key>
+		<key>1DEEA439-EE9D-4026-A754-601BDD33797E</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/mutualmobile/MMProgressHUD.git</string>
+	<string>ssh://github.com/Yalantis/MMProgressHUD.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>AD8BEC46-6469-4696-9DDC-AD18F7D7F138</string>
+	<string>1DEEA439-EE9D-4026-A754-601BDD33797E</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>AD8BEC46-6469-4696-9DDC-AD18F7D7F138</string>
+			<string>1DEEA439-EE9D-4026-A754-601BDD33797E</string>
 			<key>IDESourceControlWCCName</key>
 			<string>MMProgressHUD</string>
 		</dict>

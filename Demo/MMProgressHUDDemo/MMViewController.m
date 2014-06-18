@@ -11,6 +11,8 @@
 #import "MMProgressHUDOverlayView.h"
 #import "MMRadialProgressView.h"
 #import "MMLinearProgressView.h"
+#import "UIImage+ImageEffects.h"
+#import "UIView+MMSnapshot.h"
 
 typedef NS_ENUM(NSInteger, MMProgressHUDDemoSections) {
     MMProgressHUDDemoSectionFeatures = 0,
@@ -34,7 +36,7 @@ typedef NS_ENUM(NSInteger, MMProgressHUDDemoAnimationType) {
 typedef NS_ENUM(NSInteger, MMProgressHUDDemoOverlayType) {
     MMProgressHUDDemoOverlayTypeGradient = 0,
     MMProgressHUDDemoOverlayTypeLinear,
-//    MMProgressHUDDemoOverlayTypeBlur,
+    MMProgressHUDDemoOverlayTypeBlur,
 //    MMProgressHUDDemoOverlayTypeCoreImage,
     MMProgressHUDDemoNumberOfOverlayTypes //THIS MUST REMAIN AT END
 };
@@ -120,6 +122,7 @@ typedef NS_ENUM(NSInteger, MMProgressHUDDemoFeatureType) {
                     [MMProgressHUD showWithTitle:@"Bordered" status:@"Bordered Style"];
                     break;
                 case MMProgressHUDDemoTypeStylePlain:
+                    [[MMProgressHUD sharedHUD] setOverlayMode:MMProgressHUDWindowOverlayModeBlur];
                     [MMProgressHUD setDisplayStyle:MMProgressHUDDisplayStylePlain];
                     [MMProgressHUD showWithTitle:@"Plain" status:@"No Border"];
                     break;

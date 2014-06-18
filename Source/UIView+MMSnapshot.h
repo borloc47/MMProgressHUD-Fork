@@ -9,8 +9,8 @@
 
 @interface UIView (MMSnapshot)
 
-- (UIImage *)mm_snaphotInRect:(CGRect)rect;
-- (UIImage *)mm_snaphot;
+- (UIImage *)mm_snapshotInRect:(CGRect)rect;
+- (UIImage *)mm_snapshot;
 
 @end
 

@@ -10,10 +10,9 @@
 
 #import "UIView+MMSnapshot.h"
 #import "UIImage+ImageEffects.h"
+#import "MMProgressHUDWindow.h"
 
-@interface MMProgressHUDOverlayView() {
-    UIImageView *_blurImageView;
-}
+@interface MMProgressHUDOverlayView()
 
 @property (nonatomic) CGGradientRef gradientRef;
 
@@ -41,10 +40,6 @@
 - (instancetype)initWithFrame:(CGRect)frame overlayMode:(MMProgressHUDWindowOverlayMode)overlayMode {
     self = [super initWithFrame:frame];
     if (self) {
-        _blurImageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        [_blurImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-        [self addSubview:_blurImageView];
-
         [self setOverlayMode:overlayMode];
 
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -65,7 +60,7 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-//    [super drawRect:rect];
+    [super drawRect:rect];
     
     switch (self.overlayMode) {
         case MMProgressHUDWindowOverlayModeGradient:
@@ -164,18 +159,20 @@
 }
 
 - (void)_renderBlurInRect:(CGRect)rect {
-    CGRect renderingRect = [self.window convertRect:rect fromView:self];
-    UIImage *snapshot = [self.window mm_snaphotInRect:renderingRect];
-    UIImage *bluredSnapshot = [snapshot mm_applyBlurWithRadius:1.f tintColor:[UIColor colorWithCGColor:_overlayColor] saturationDeltaFactor:2.0f maskImage:nil];
+    MMProgressHUDWindow *window = (MMProgressHUDWindow *)self.window;
+    NSParameterAssert([window isKindOfClass:MMProgressHUDWindow.class]);
 
-    [_blurImageView setImage:bluredSnapshot];
+    UIImage *snapshot = [window.oldWindow mm_snapshot];
+    UIImage *bluredSnapshot = [snapshot mm_applyBlurWithRadius:5.f
+                                                     tintColor:[UIColor colorWithCGColor:_overlayColor]
+                                         saturationDeltaFactor:1.8 maskImage:nil];
+
+    [bluredSnapshot drawInRect:rect];
 }
 
 - (void)setOverlayMode:(MMProgressHUDWindowOverlayMode)overlayMode {
     if (_overlayMode != overlayMode) {
         _overlayMode = overlayMode;
-
-        [_blurImageView setHidden:_overlayMode != MMProgressHUDWindowOverlayModeBlur];
     }
 
     [self setNeedsDisplay];
