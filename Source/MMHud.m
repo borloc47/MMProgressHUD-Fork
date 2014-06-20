@@ -299,15 +299,15 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 - (void)configureInitialDisplayAttributes {
     UIColor *backgroundColor = [MMHudAppearance appearance].backgroundColor;
     
-    CGColorRef blackColor = CGColorRetain([UIColor blackColor].CGColor);
+    CGColorRef shadowColor = CGColorRetain([MMHudAppearance appearance].shadowColor.CGColor);
     
     self.backgroundColor = backgroundColor;
-    self.layer.shadowColor  = blackColor;
+    self.layer.shadowColor  = shadowColor;
     self.layer.shadowOpacity = [MMHudAppearance appearance].shadowOpacity;
     self.layer.shadowRadius = [MMHudAppearance appearance].shadowRadius;
     self.layer.cornerRadius = [MMHudAppearance appearance].cornerRadius;
     
-    CGColorRelease(blackColor);
+    CGColorRelease(shadowColor);
     
     self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 }
@@ -385,10 +385,8 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     CGRect imageTitleRect = CGRectUnion(self.titleFrame, self.contentAreaFrame);
     CGRect finalHudBounds = CGRectUnion(imageTitleRect, self.statusFrame);
     
-    if ([MMHudAppearance appearance].usesContstantSizeForHudAndCenterPoints) {
-        finalHudBounds = CGRectZero;
-        finalHudBounds.size = [MMHudAppearance appearance].size;;
-    }
+    //
+    finalHudBounds.size = [self appearanceSizeFromCalculationSize:finalHudBounds.size];
     
     id<MMHudDelegate> localDelegate = self.delegate;
     
@@ -401,7 +399,8 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
                                             finalHudBounds:finalHudBounds];
     }
     
-    [self askProviderAndUpdateLayoutFramesWithFinalHudBounds:finalHudBounds];
+    //
+    [self adjustLayoutByAppearanceWithFinalSize:finalHudBounds.size];
     
     //update subviews' frames
     self.titleLabel.frame = self.titleFrame;
@@ -413,14 +412,49 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     self.layer.shadowPath = shadowPath.CGPath;
 }
 
-- (void)askProviderAndUpdateLayoutFramesWithFinalHudBounds:(CGRect)finalHudBounds
+- (CGSize)appearanceSizeFromCalculationSize:(CGSize)size
+{
+    switch ([MMHudAppearance appearance].sizeMode) {
+        case MMHUDSizeModeDefault:
+            return size;
+            
+        case MMHUDSizeModeConstantSize:
+            return [MMHudAppearance appearance].constantSize;
+        
+        case MMHUDSizeModeMinSize:
+        {
+            CGSize minSize = [MMHudAppearance appearance].minSize;
+            size.width = MAX(size.width, minSize.width);
+            size.height = MAX(size.height, minSize.height);
+            return size;
+        }
+    }
+}
+
+- (void)adjustLayoutByAppearanceWithFinalSize:(CGSize)finalSize
 {
     MMHudAppearance *appearance = [MMHudAppearance appearance];
-    if (appearance.usesContstantSizeForHudAndCenterPoints) {
-        self.titleFrame = [self createFrameWithCenter:appearance.titleCenterPoint fromFrame:self.titleFrame];
-        self.contentAreaFrame = [self createFrameWithCenter:appearance.contentCenterPoint fromFrame:self.contentAreaFrame];
-        self.statusFrame = [self createFrameWithCenter:appearance.statusCenterPoint fromFrame:self.statusFrame];
-    }
+    
+    CGFloat contentHeight = CGRectGetHeight(self.titleFrame) + CGRectGetHeight(self.contentAreaFrame) + CGRectGetHeight(self.statusFrame);
+    
+    NSInteger paddingZoneCount = 4;
+    CGFloat padding = (finalSize.height - contentHeight) / paddingZoneCount;
+    
+    CGFloat centerX = finalSize.width / 2 + MMProgressHUDContentPadding;
+    
+    CGFloat top = padding;
+    
+    self.titleFrame = [self createFrameWithCenter:CGPointMake(centerX, top + CGRectGetHeight(self.titleFrame)/2)
+                                        fromFrame:self.titleFrame];
+    top += CGRectGetHeight(self.titleFrame) + padding;
+    self.contentAreaFrame = [self createFrameWithCenter:CGPointMake(centerX, top + CGRectGetHeight(self.contentAreaFrame)/2) fromFrame:self.contentAreaFrame];
+    top += CGRectGetHeight(self.contentAreaFrame) + padding;
+    self.statusFrame = [self createFrameWithCenter:CGPointMake(centerX, top + CGRectGetHeight(self.statusFrame)/2)
+                                         fromFrame:self.statusFrame];
+    
+    self.titleFrame = CGRectOffset(self.titleFrame, appearance.titleOffset.x, appearance.titleOffset.y);
+    self.contentAreaFrame = CGRectOffset(self.contentAreaFrame, appearance.middleAreaOffset.x, appearance.middleAreaOffset.y);
+    self.statusFrame = CGRectOffset(self.statusFrame, appearance.statusOffset.x, appearance.statusOffset.y);
 }
 
 - (CGRect)createFrameWithCenter:(CGPoint)point fromFrame:(CGRect)frame

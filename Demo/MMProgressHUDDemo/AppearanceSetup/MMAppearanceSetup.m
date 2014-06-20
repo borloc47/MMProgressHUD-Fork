@@ -13,35 +13,32 @@
 
 + (void)setup
 {
-    MMHudAppearance *appearance = [MMHudAppearance appearance];
+//    MMHudAppearance *appearance = [MMHudAppearance appearance];
     
-    appearance.backgroundColor = [UIColor darkGrayColor];
-    appearance.titleColor = [UIColor redColor];
-    appearance.statusColor = [UIColor greenColor];
-    appearance.activityIndicatorColor = [UIColor blackColor];
+//    appearance.backgroundColor = [UIColor darkGrayColor];
+//    appearance.titleColor = [UIColor redColor];
+//    appearance.statusColor = [UIColor greenColor];
+//    appearance.activityIndicatorColor = [UIColor blackColor];
 //    appearance.titleShadowColor = [UIColor blackColor];
 //    appearance.statusShadowColor = [UIColor blackColor];
 
-    appearance.titleFont = [UIFont boldSystemFontOfSize:12];
-    appearance.statusFont = [UIFont systemFontOfSize:14];
+//    appearance.titleFont = [UIFont boldSystemFontOfSize:12];
+//    appearance.statusFont = [UIFont systemFontOfSize:14];
+//    
+//    appearance.cornerRadius = 20;
     
-    appearance.cornerRadius = 20;
+//    [appearance makeHudToBeWithDefaultSize];  //default behavior, call is not required
+// or
+//    [appearance makeHudToBeWithConstantSize:CGSizeMake(200, 200)];
+// or
+//    [appearance makeHudToBeWithMinSize:CGSizeMake(137, 137)];
+//    
+//    appearance.titleShadowOffset = CGSizeZero;
+//    appearance.statusShadowOffset = CGSizeZero;
 
-
-//    Specifies positions for all zones on the hud
-
-    [appearance setHudConstantSize:CGSizeMake(137, 137)];
- 
-//    or
- 
-//    [appearance setHudConstantSize:CGSizeMake(200, 200)
-//                  titleCenterPoint:CGPointMake(10, 20)
-//                contentCenterPoint:CGPointMake(40, 60)
-//                 statusCenterPoint:CGPointMake(80, 100)];
-//*/
-    
-    appearance.titleShadowOffset = CGSizeZero;
-    appearance.statusShadowOffset = CGSizeZero;
+//    appearance.titleOffset = CGPointMake(0, -20);
+//    appearance.middleAreaOffset = CGPointMake(0, -20);
+//    appearance.statusOffset = CGPointMake(0, 20);
 }
 
 @end

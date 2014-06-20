@@ -446,7 +446,7 @@ CGSize const MMProgressHUDDefaultImageSize = {37.f, 37.f};
 }
 
 - (void)_updateHUD {
-    if (![MMHudAppearance appearance].usesContstantSizeForHudAndCenterPoints) {
+    if ([MMHudAppearance appearance].sizeMode == MMHUDSizeModeDefault) {
         [self.hud updateLayoutFrames];
     }
     

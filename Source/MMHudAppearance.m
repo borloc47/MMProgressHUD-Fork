@@ -14,11 +14,9 @@ CGFloat    const kMMProgressHUDDefaultFontSize           = 16.f;
 
 @interface MMHudAppearance ()
 
-@property (nonatomic, assign) CGSize size;
-@property (nonatomic, assign) CGPoint titleCenterPoint;
-@property (nonatomic, assign) CGPoint contentCenterPoint;
-@property (nonatomic, assign) CGPoint statusCenterPoint;
-@property (nonatomic, assign) BOOL usesContstantSizeForHudAndCenterPoints;
+@property (nonatomic, assign) enum MMHUDSizeMode sizeMode;
+@property (nonatomic, assign) CGSize constantSize;
+@property (nonatomic, assign) CGSize minSize;
 
 @end
 
@@ -48,8 +46,10 @@ CGFloat    const kMMProgressHUDDefaultFontSize           = 16.f;
         self.titleColor = [UIColor whiteColor];
         self.statusColor = [UIColor colorWithWhite:0.9f alpha:0.95f];
         self.activityIndicatorColor = [UIColor whiteColor];
+        self.shadowColor = [UIColor blackColor];
+        self.titleShadowColor = [UIColor blackColor];
+        self.statusShadowColor = [UIColor blackColor];
         
-        self.usesContstantSizeForHudAndCenterPoints = NO;
         self.titleFont = [UIFont fontWithName:kMMProgressHUDFontNameBold size:kMMProgressHUDDefaultFontSize];
         self.statusFont = [UIFont fontWithName:kMMProgressHUDFontNameNormal size:kMMProgressHUDDefaultFontSize];;
         
@@ -58,10 +58,12 @@ CGFloat    const kMMProgressHUDDefaultFontSize           = 16.f;
         self.shadowOpacity = 0.5f;
         self.shadowRadius = 15.0f;
         
-        self.size = CGSizeZero;
-        self.titleCenterPoint = CGPointZero;
-        self.contentCenterPoint = CGPointZero;
-        self.statusCenterPoint = CGPointZero;
+        self.minSize = CGSizeZero;
+        self.constantSize = CGSizeZero;
+        
+        self.titleOffset = CGPointZero;
+        self.middleAreaOffset = CGPointZero;
+        self.statusOffset = CGPointZero;
         
         self.titleShadowColor = [UIColor blackColor];
         self.titleShadowOffset = CGSizeMake(0, -1);
@@ -72,26 +74,21 @@ CGFloat    const kMMProgressHUDDefaultFontSize           = 16.f;
     return self;
 }
 
-- (void)setHudConstantSize:(CGSize)size
+- (void)makeHudToBeWithDefaultSize
 {
-    [self setHudConstantSize:size
-            titleCenterPoint:CGPointMake(size.width/2, size.height/6)
-          contentCenterPoint:CGPointMake(size.width/2, size.height/2)
-           statusCenterPoint:CGPointMake(size.width/2, size.height-size.height/6)];
+    self.sizeMode = MMHUDSizeModeDefault;
 }
 
-- (void)setHudConstantSize:(CGSize)size
-          titleCenterPoint:(CGPoint)titleCenterPoint
-        contentCenterPoint:(CGPoint)contentCenterPoint
-         statusCenterPoint:(CGPoint)statusCenterPoint
+- (void)makeHudToBeWithConstantSize:(CGSize)constantSize
 {
-    self.usesContstantSizeForHudAndCenterPoints = YES;
-    
-    self.size = size;
-    self.titleCenterPoint = titleCenterPoint;
-    self.contentCenterPoint = contentCenterPoint;
-    self.statusCenterPoint = statusCenterPoint;
+    self.sizeMode = MMHUDSizeModeConstantSize;
+    self.constantSize = constantSize;
 }
 
+- (void)makeHudToBeWithMinSize:(CGSize)minSize
+{
+    self.sizeMode = MMHUDSizeModeMinSize;
+    self.minSize = minSize;
+}
 
 @end

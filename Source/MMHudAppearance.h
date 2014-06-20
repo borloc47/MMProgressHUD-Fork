@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ENUM(NSInteger, MMHUDSizeMode) {
+    MMHUDSizeModeDefault,            //hud provides default MMHud behaviour, without any changes
+    MMHUDSizeModeConstantSize,       //hud has constant size and does not adjust to content needs
+    MMHUDSizeModeMinSize,            //hud adjusts its size to content needs, but has min size limitation
+};
+
 @interface MMHudAppearance : NSObject <UIAppearance>
 
 @property (nonatomic, strong) UIColor *backgroundColor;
@@ -16,6 +22,7 @@
 @property (nonatomic, strong) UIColor *activityIndicatorColor;
 @property (nonatomic, strong) UIColor *titleShadowColor;
 @property (nonatomic, strong) UIColor *statusShadowColor;
+@property (nonatomic, strong) UIColor *shadowColor;
 
 @property (nonatomic, strong) UIFont *titleFont;
 @property (nonatomic, strong) UIFont *statusFont;
@@ -27,19 +34,17 @@
 @property (nonatomic, assign) CGFloat shadowOpacity;
 @property (nonatomic, assign) CGFloat shadowRadius;
 
+@property (nonatomic, assign, readonly) enum MMHUDSizeMode sizeMode;
 
-@property (nonatomic, assign, readonly) BOOL usesContstantSizeForHudAndCenterPoints;
-@property (nonatomic, assign, readonly) CGSize size;
-@property (nonatomic, assign, readonly) CGPoint titleCenterPoint;
-@property (nonatomic, assign, readonly) CGPoint contentCenterPoint;
-@property (nonatomic, assign, readonly) CGPoint statusCenterPoint;
+@property (nonatomic, assign, readonly) CGSize constantSize;
+@property (nonatomic, assign, readonly) CGSize minSize;
 
+@property (nonatomic, assign) CGPoint titleOffset;
+@property (nonatomic, assign) CGPoint middleAreaOffset;
+@property (nonatomic, assign) CGPoint statusOffset;
 
-- (void)setHudConstantSize:(CGSize)size;
-
-- (void)setHudConstantSize:(CGSize)size
-          titleCenterPoint:(CGPoint)titleCenterPoint
-        contentCenterPoint:(CGPoint)contentCenterPoint
-         statusCenterPoint:(CGPoint)statusCenterPoint;
+- (void)makeHudToBeWithDefaultSize;
+- (void)makeHudToBeWithConstantSize:(CGSize)constantSize;
+- (void)makeHudToBeWithMinSize:(CGSize)minSize;
 
 @end
