@@ -7,6 +7,7 @@
 //
 
 #import "MMAppDelegate.h"
+#import "MMAppearanceSetup.h"
 
 #import "MMViewController.h"
 
@@ -22,6 +23,8 @@
     self.viewController = vc;
     self.window.rootViewController = self.viewController;
     
+    [MMAppearanceSetup setup];
+        
     [self.window makeKeyAndVisible];
     return YES;
 }

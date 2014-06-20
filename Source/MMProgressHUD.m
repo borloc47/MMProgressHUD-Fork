@@ -20,6 +20,7 @@
 
 #import "MMLinearProgressView.h"
 #import "MMRadialProgressView.h"
+#import "MMHudAppearance.h"
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_5_0
 #error MMProgressHUD uses APIs only available in iOS 5.0+
@@ -445,7 +446,9 @@ CGSize const MMProgressHUDDefaultImageSize = {37.f, 37.f};
 }
 
 - (void)_updateHUD {
-    [self.hud updateLayoutFrames];
+    if (![MMHudAppearance appearance].usesContstantSizeForHudAndCenterPoints) {
+        [self.hud updateLayoutFrames];
+    }
     
     [self.hud updateAnimated:YES withCompletion:nil];
     
