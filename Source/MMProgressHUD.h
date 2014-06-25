@@ -161,6 +161,34 @@ This message will be presented to the user when a cancelBlock is present after t
  */
 + (instancetype)sharedHUD;
 
+//-----------------------------------------------
+/** @name Appearance */
+//-----------------------------------------------
+
+@property (nonatomic, strong) UIColor *hudBackgroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *titleColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *statusColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *activityIndicatorColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *titleShadowColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *statusShadowColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *shadowColor UI_APPEARANCE_SELECTOR;
+
+@property (nonatomic, strong) UIFont *titleFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *statusFont UI_APPEARANCE_SELECTOR;
+
+@property(nonatomic, assign) CGSize titleShadowOffset UI_APPEARANCE_SELECTOR;
+@property(nonatomic, assign) CGSize statusShadowOffset UI_APPEARANCE_SELECTOR;
+
+@property (nonatomic, assign) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat shadowOpacity UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat shadowRadius UI_APPEARANCE_SELECTOR;
+
+@property (nonatomic, assign) CGPoint titleOffset UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGPoint middleAreaOffset UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGPoint statusOffset UI_APPEARANCE_SELECTOR;
+
+- (void)setHudSizeMode:(MMHUDSizeMode)sizeMode withWidth:(NSInteger)width height:(NSInteger)height UI_APPEARANCE_SELECTOR;
+
 @end
 
 @interface MMProgressHUD (Class)
@@ -573,5 +601,4 @@ This message will be presented to the user when a cancelBlock is present after t
           confirmationMessage:(NSString *)confirmation
                   cancelBlock:(void (^)(void))cancelBlock
                        images:(NSArray *)images DEPRECATED_ATTRIBUTE;
-
 @end

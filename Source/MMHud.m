@@ -12,7 +12,6 @@
 #import "MMProgressHUDCommon.h"
 #import "MMProgressView-Protocol.h"
 #import "MMRadialProgressView.h"
-#import "MMHudAppearance.h"
 
 CGFloat    const MMProgressHUDDefaultFontSize           = 16.f;
 
@@ -33,7 +32,6 @@ CGFloat    const MMProgressHUDAnimateOutDurationShort   = 0.35f;
 CGSize const MMProgressHUDDefaultContentAreaSize = { 100.f, 100.f };
 CGSize const MMProgressHUDProgressContentAreaSize = { 40.f, 40.f };
 CGSize const MMProgressHUDProgressMaximumAreaSize = {200.0f, 200.0f};
-
 
 NSString * const MMProgressHUDFontNameBold = @"HelveticaNeue-Bold";
 NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
@@ -59,6 +57,10 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 @property (nonatomic, assign) CGRect titleFrame;
 
 @end
+
+@interface MMHud (HudAppearance)
+@end
+
 
 @implementation MMHud
 
@@ -297,15 +299,22 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 }
 
 - (void)configureInitialDisplayAttributes {
-    UIColor *backgroundColor = [MMHudAppearance appearance].backgroundColor;
     
-    CGColorRef shadowColor = CGColorRetain([MMHudAppearance appearance].shadowColor.CGColor);
+    self.sizeMode = MMHUDSizeModeDefault;
+    self.size = CGSizeZero;
+    self.titleOffset = CGPointZero;
+    self.middleAreaOffset = CGPointZero;
+    self.statusOffset = CGPointZero;
+    
+    UIColor *backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.75];
+    
+    CGColorRef shadowColor = CGColorRetain([UIColor blackColor].CGColor);
     
     self.backgroundColor = backgroundColor;
     self.layer.shadowColor  = shadowColor;
-    self.layer.shadowOpacity = [MMHudAppearance appearance].shadowOpacity;
-    self.layer.shadowRadius = [MMHudAppearance appearance].shadowRadius;
-    self.layer.cornerRadius = [MMHudAppearance appearance].cornerRadius;
+    self.layer.shadowOpacity = 0.5f;
+    self.layer.shadowRadius = 15.0f;
+    self.layer.cornerRadius = 10.0f;
     
     CGColorRelease(shadowColor);
     
@@ -326,8 +335,17 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     hudRect = CGRectIntegral(CGRectInset(hudRect, -MMProgressHUDContentPadding, -MMProgressHUDContentPadding));
     
     self.frame = hudRect;
-    
+/*
+    ATTENTION !!!
+ 
+    The next line of code is presented in original MMProgressHud, but in this version it is commented.
+    This line is not needed because "[self configureInitialDisplayAttributes]" already called from init.
+    And "frameInitialHUDPositionOffscreenWithDelegate" can be called only once in Hud life time just before first presentation on screen. So hud already configured.
+ 
+    But in case when code is uncommented it changes values that alredy were set via UIAppearance. !!!
+ 
     [self configureInitialDisplayAttributes];
+*/
 }
 
 - (void)frameHUDPositionPreservingCenterWithDelegate:(id<MMHudDelegate>)localDelegate finalHudBounds:(CGRect)finalHudBounds {
@@ -414,16 +432,16 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 
 - (CGSize)appearanceSizeFromCalculationSize:(CGSize)size
 {
-    switch ([MMHudAppearance appearance].sizeMode) {
+    switch (self.sizeMode) {
         case MMHUDSizeModeDefault:
             return size;
             
         case MMHUDSizeModeConstantSize:
-            return [MMHudAppearance appearance].constantSize;
+            return self.size;
         
         case MMHUDSizeModeMinSize:
         {
-            CGSize minSize = [MMHudAppearance appearance].minSize;
+            CGSize minSize = self.size;
             size.width = MAX(size.width, minSize.width);
             size.height = MAX(size.height, minSize.height);
             return size;
@@ -433,8 +451,6 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 
 - (void)adjustLayoutByAppearanceWithFinalSize:(CGSize)finalSize
 {
-    MMHudAppearance *appearance = [MMHudAppearance appearance];
-    
     CGFloat contentHeight = CGRectGetHeight(self.titleFrame) + CGRectGetHeight(self.contentAreaFrame) + CGRectGetHeight(self.statusFrame);
     
     NSInteger paddingZoneCount = 4;
@@ -452,9 +468,9 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     self.statusFrame = [self createFrameWithCenter:CGPointMake(centerX, top + CGRectGetHeight(self.statusFrame)/2)
                                          fromFrame:self.statusFrame];
     
-    self.titleFrame = CGRectOffset(self.titleFrame, appearance.titleOffset.x, appearance.titleOffset.y);
-    self.contentAreaFrame = CGRectOffset(self.contentAreaFrame, appearance.middleAreaOffset.x, appearance.middleAreaOffset.y);
-    self.statusFrame = CGRectOffset(self.statusFrame, appearance.statusOffset.x, appearance.statusOffset.y);
+    self.titleFrame = CGRectOffset(self.titleFrame, self.titleOffset.x, self.titleOffset.y);
+    self.contentAreaFrame = CGRectOffset(self.contentAreaFrame, self.middleAreaOffset.x, self.middleAreaOffset.y);
+    self.statusFrame = CGRectOffset(self.statusFrame, self.statusOffset.x, self.statusOffset.y);
 }
 
 - (CGRect)createFrameWithCenter:(CGPoint)point fromFrame:(CGRect)frame
@@ -633,10 +649,10 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 #pragma clang diagnostic pop
         }
         _statusLabel.backgroundColor = [UIColor clearColor];
-        _statusLabel.font = [MMHudAppearance appearance].statusFont;
-        _statusLabel.textColor = [MMHudAppearance appearance].statusColor;
-        _statusLabel.shadowColor = [MMHudAppearance appearance].statusShadowColor;
-        _statusLabel.shadowOffset = [MMHudAppearance appearance].statusShadowOffset;
+        _statusLabel.font = [UIFont fontWithName:MMProgressHUDFontNameNormal size:MMProgressHUDDefaultFontSize];
+        _statusLabel.textColor = [UIColor colorWithWhite:0.9f alpha:0.95f];
+        _statusLabel.shadowColor = [UIColor blackColor];
+        _statusLabel.shadowOffset = CGSizeMake(0, -1);
         
 #ifdef MM_HUD_FRAME_DEBUG
         CGColorRef redColor = CGColorRetain([UIColor redColor].CGColor);
@@ -671,10 +687,10 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 #pragma clang diagnostic pop
         }
         _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.font = [MMHudAppearance appearance].titleFont;
-        _titleLabel.textColor = [MMHudAppearance appearance].titleColor;
-        _titleLabel.shadowColor = [MMHudAppearance appearance].titleShadowColor;
-        _titleLabel.shadowOffset = [MMHudAppearance appearance].titleShadowOffset;
+        _titleLabel.font = [UIFont fontWithName:MMProgressHUDFontNameBold size:MMProgressHUDDefaultFontSize];
+        _titleLabel.textColor = [UIColor whiteColor];
+        _titleLabel.shadowColor = [UIColor blackColor];
+        _titleLabel.shadowOffset = CGSizeMake(0, -1);
         
 #ifdef MM_HUD_FRAME_DEBUG
         CGColorRef blueColor = CGColorRetain([UIColor blueColor].CGColor);
@@ -762,7 +778,7 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
         
         _activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         _activityIndicator.hidesWhenStopped = YES;
-        _activityIndicator.color = [MMHudAppearance appearance].activityIndicatorColor;
+        _activityIndicator.color = [UIColor whiteColor];
     }
     return _activityIndicator;
 }
@@ -874,5 +890,6 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     self.completionState = MMProgressHUDCompletionStateNone;
     self.visible = NO;
 }
+
 
 @end

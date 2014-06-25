@@ -7,38 +7,37 @@
 //
 
 #import "MMAppearanceSetup.h"
-#import "MMHudAppearance.h"
+#import "MMProgressHUD.h"
 
 @implementation MMAppearanceSetup
 
 + (void)setup
 {
-//    MMHudAppearance *appearance = [MMHudAppearance appearance];
+    [MMProgressHUD appearance].hudBackgroundColor = [UIColor lightGrayColor];
     
-//    appearance.backgroundColor = [UIColor darkGrayColor];
-//    appearance.titleColor = [UIColor redColor];
-//    appearance.statusColor = [UIColor greenColor];
-//    appearance.activityIndicatorColor = [UIColor blackColor];
-//    appearance.titleShadowColor = [UIColor blackColor];
-//    appearance.statusShadowColor = [UIColor blackColor];
+    [MMProgressHUD appearance].titleColor = [UIColor redColor];
+    [MMProgressHUD appearance].statusColor = [UIColor greenColor];
+    [MMProgressHUD appearance].activityIndicatorColor = [UIColor blackColor];
+    [MMProgressHUD appearance].titleShadowColor = [UIColor blackColor];
+    [MMProgressHUD appearance].statusShadowColor = [UIColor blackColor];
 
-//    appearance.titleFont = [UIFont boldSystemFontOfSize:12];
-//    appearance.statusFont = [UIFont systemFontOfSize:14];
-//    
-//    appearance.cornerRadius = 20;
+    [MMProgressHUD appearance].titleFont = [UIFont boldSystemFontOfSize:12];
+    [MMProgressHUD appearance].statusFont = [UIFont systemFontOfSize:14];
+
+    [MMProgressHUD appearance].cornerRadius = 30;
     
-//    [appearance makeHudToBeWithDefaultSize];  //default behavior, call is not required
-// or
-//    [appearance makeHudToBeWithConstantSize:CGSizeMake(200, 200)];
-// or
-//    [appearance makeHudToBeWithMinSize:CGSizeMake(137, 137)];
-//    
-//    appearance.titleShadowOffset = CGSizeZero;
-//    appearance.statusShadowOffset = CGSizeZero;
+//    [[MMProgressHUD appearance] setHudSizeMode:MMHUDSizeModeDefault withWidth:0 height:0];
+//    or
+//    [[MMProgressHUD appearance] setHudSizeMode:MMHUDSizeModeConstantSize withWidth:200 height:200];
+//    or
+    [[MMProgressHUD appearance] setHudSizeMode:MMHUDSizeModeMinSize withWidth:137 height:137];
 
-//    appearance.titleOffset = CGPointMake(0, -20);
-//    appearance.middleAreaOffset = CGPointMake(0, -20);
-//    appearance.statusOffset = CGPointMake(0, 20);
+    [MMProgressHUD appearance].titleShadowOffset = CGSizeZero;
+    [MMProgressHUD appearance].statusShadowOffset = CGSizeZero;
+
+//    [MMProgressHUD appearance].titleOffset = CGPointMake(0, -20);
+//    [MMProgressHUD appearance].middleAreaOffset = CGPointMake(0, -20);
+//    [MMProgressHUD appearance].statusOffset = CGPointMake(0, 20);
 }
 
 @end

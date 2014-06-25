@@ -41,6 +41,12 @@ typedef NS_ENUM(NSInteger, MMProgressHUDCompletionState) {
     MMProgressHUDCompletionStateSuccess,
 };
 
+typedef NS_ENUM(NSInteger, MMHUDSizeMode) {
+    MMHUDSizeModeDefault,            //hud provides default MMHud behaviour, without any changes
+    MMHUDSizeModeConstantSize,       //hud has constant size and does not adjust to content needs
+    MMHUDSizeModeMinSize,            //hud adjusts its size to content needs, but has min size limitation
+};
+
 @class MMHud;
 
 @protocol MMHudDelegate <NSObject>
@@ -175,6 +181,12 @@ typedef NS_ENUM(NSInteger, MMProgressHUDCompletionState) {
 /** An array of animated images that will display in the middle of the HUD. This takes precedence over image. 
  */
 @property (nonatomic, copy) NSArray *animationImages;
+
+@property (nonatomic, assign) enum MMHUDSizeMode sizeMode;
+@property (nonatomic, assign) CGSize size;
+@property (nonatomic, assign) CGPoint titleOffset;
+@property (nonatomic, assign) CGPoint middleAreaOffset;
+@property (nonatomic, assign) CGPoint statusOffset;
 
 //-----------------------------------------------
 /** @name Layout */

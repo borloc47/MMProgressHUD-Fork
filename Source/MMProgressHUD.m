@@ -20,7 +20,6 @@
 
 #import "MMLinearProgressView.h"
 #import "MMRadialProgressView.h"
-#import "MMHudAppearance.h"
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_5_0
 #error MMProgressHUD uses APIs only available in iOS 5.0+
@@ -446,7 +445,7 @@ CGSize const MMProgressHUDDefaultImageSize = {37.f, 37.f};
 }
 
 - (void)_updateHUD {
-    if ([MMHudAppearance appearance].sizeMode == MMHUDSizeModeDefault) {
+    if (self.hud.sizeMode == MMHUDSizeModeDefault) {
         [self.hud updateLayoutFrames];
     }
     
@@ -757,6 +756,66 @@ CGSize const MMProgressHUDDefaultImageSize = {37.f, 37.f};
 
 - (CGPoint)hudCenterPointForDisplay:(MMHud *)hud {
     return [self _windowCenterForHUDAnchor:hud.layer.anchorPoint];
+}
+
+#pragma mark -
+#pragma mark Appearance
+
+- (void)setHudBackgroundColor:(UIColor *)hudBackgroundColor { self.hud.backgroundColor = hudBackgroundColor; }
+- (UIColor *)hudBackgroundColor { return _hud.backgroundColor; }
+
+- (void)setTitleColor:(UIColor *)titleColor { self.hud.titleLabel.textColor = titleColor; }
+- (UIColor *)titleColor { return self.hud.titleLabel.textColor; }
+
+- (void)setStatusColor:(UIColor *)statusColor { self.hud.statusLabel.textColor = statusColor; }
+- (UIColor *)statusColor { return self.hud.statusLabel.textColor; }
+
+- (void)setActivityIndicatorColor:(UIColor *)activityIndicatorColor { self.hud.activityIndicator.color = activityIndicatorColor; }
+- (UIColor *)activityIndicatorColor { return self.hud.activityIndicator.color; }
+
+- (void)setTitleShadowColor:(UIColor *)titleShadowColor { self.hud.titleLabel.shadowColor = titleShadowColor; }
+- (UIColor *)titleShadowColor { return self.hud.titleLabel.shadowColor; }
+
+- (void)setStatusShadowColor:(UIColor *)statusShadowColor { self.hud.statusLabel.shadowColor = statusShadowColor; }
+- (UIColor *)statusShadowColor { return self.hud.statusLabel.shadowColor; }
+
+- (void)setShadowColor:(UIColor *)shadowColor { self.hud.layer.shadowColor = shadowColor.CGColor; }
+- (UIColor *)shadowColor { return [UIColor colorWithCGColor:self.hud.layer.shadowColor]; }
+
+- (void)setTitleFont:(UIFont *)titleFont { self.hud.titleLabel.font = titleFont; }
+- (UIFont *)titleFont { return self.hud.titleLabel.font; }
+
+- (void)setStatusFont:(UIFont *)statusFont { self.hud.statusLabel.font = statusFont; }
+- (UIFont *)statusFont { return self.hud.statusLabel.font; }
+
+- (void)setTitleShadowOffset:(CGSize)titleShadowOffset { self.hud.titleLabel.shadowOffset = titleShadowOffset; }
+- (CGSize)titleShadowOffset { return self.hud.titleLabel.shadowOffset; }
+
+- (void)setStatusShadowOffset:(CGSize)statusShadowOffset { self.hud.statusLabel.shadowOffset = statusShadowOffset; }
+- (CGSize)statusShadowOffset { return self.hud.statusLabel.shadowOffset; }
+
+- (void)setCornerRadius:(CGFloat)cornerRadius { self.hud.layer.cornerRadius = cornerRadius; }
+- (CGFloat)cornerRadius { return self.layer.cornerRadius; }
+
+- (void)setShadowOpacity:(CGFloat)shadowOpacity { self.hud.layer.shadowOpacity = shadowOpacity; }
+- (CGFloat)shadowOpacity { return self.hud.layer.shadowOpacity; }
+
+- (void)setShadowRadius:(CGFloat)shadowRadius { self.hud.layer.shadowRadius = shadowRadius; }
+- (CGFloat)shadowRadius { return self.hud.layer.shadowRadius; }
+
+- (void)setTitleOffset:(CGPoint)titleOffset { self.hud.titleOffset = titleOffset; }
+- (CGPoint)titleOffset { return self.hud.titleOffset; }
+
+- (void)setMiddleAreaOffset:(CGPoint)middleAreaOffset { self.hud.middleAreaOffset = middleAreaOffset; }
+- (CGPoint)middleAreaOffset { return self.hud.middleAreaOffset; }
+
+- (void)setStatusOffset:(CGPoint)statusOffset { self.hud.statusOffset = statusOffset; }
+- (CGPoint)statusOffset { return self.hud.statusOffset; }
+
+- (void)setHudSizeMode:(MMHUDSizeMode)sizeMode withWidth:(NSInteger)width height:(NSInteger)height
+{
+    self.hud.sizeMode = sizeMode;
+    self.hud.size = CGSizeMake(width, height);
 }
 
 @end
