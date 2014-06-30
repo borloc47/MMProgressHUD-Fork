@@ -33,7 +33,6 @@ CGSize const MMProgressHUDDefaultContentAreaSize = { 100.f, 100.f };
 CGSize const MMProgressHUDProgressContentAreaSize = { 40.f, 40.f };
 CGSize const MMProgressHUDProgressMaximumAreaSize = {200.0f, 200.0f};
 
-
 NSString * const MMProgressHUDFontNameBold = @"HelveticaNeue-Bold";
 NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 
@@ -58,6 +57,10 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 @property (nonatomic, assign) CGRect titleFrame;
 
 @end
+
+@interface MMHud (HudAppearance)
+@end
+
 
 @implementation MMHud
 
@@ -296,15 +299,24 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
 }
 
 - (void)configureInitialDisplayAttributes {
-    CGColorRef blackColor = CGColorRetain([UIColor blackColor].CGColor);
     
-    self.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.75];
-    self.layer.shadowColor  = blackColor;
-    self.layer.shadowOpacity = 0.5;
+    self.sizeMode = MMHUDSizeModeDefault;
+    self.size = CGSizeZero;
+    self.titleOffset = CGPointZero;
+    self.middleAreaOffset = CGPointZero;
+    self.statusOffset = CGPointZero;
+    
+    UIColor *backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.75];
+    
+    CGColorRef shadowColor = CGColorRetain([UIColor blackColor].CGColor);
+    
+    self.backgroundColor = backgroundColor;
+    self.layer.shadowColor  = shadowColor;
+    self.layer.shadowOpacity = 0.5f;
     self.layer.shadowRadius = 15.0f;
     self.layer.cornerRadius = 10.0f;
     
-    CGColorRelease(blackColor);
+    CGColorRelease(shadowColor);
     
     self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 }
@@ -323,8 +335,17 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     hudRect = CGRectIntegral(CGRectInset(hudRect, -MMProgressHUDContentPadding, -MMProgressHUDContentPadding));
     
     self.frame = hudRect;
-    
+/*
+    ATTENTION !!!
+ 
+    The next line of code is presented in original MMProgressHud, but in this version it is commented.
+    This line is not needed because "[self configureInitialDisplayAttributes]" already called from init.
+    And "frameInitialHUDPositionOffscreenWithDelegate" can be called only once in Hud life time just before first presentation on screen. So hud already configured.
+ 
+    But in case when code is uncommented it changes values that alredy were set via UIAppearance. !!!
+ 
     [self configureInitialDisplayAttributes];
+*/
 }
 
 - (void)frameHUDPositionPreservingCenterWithDelegate:(id<MMHudDelegate>)localDelegate finalHudBounds:(CGRect)finalHudBounds {
@@ -382,6 +403,9 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     CGRect imageTitleRect = CGRectUnion(self.titleFrame, self.contentAreaFrame);
     CGRect finalHudBounds = CGRectUnion(imageTitleRect, self.statusFrame);
     
+    //
+    finalHudBounds.size = [self appearanceSizeFromCalculationSize:finalHudBounds.size];
+    
     id<MMHudDelegate> localDelegate = self.delegate;
     
     if (CGRectEqualToRect(self.frame, CGRectZero) == NO) {
@@ -393,6 +417,9 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
                                             finalHudBounds:finalHudBounds];
     }
     
+    //
+    [self adjustLayoutByAppearanceWithFinalSize:finalHudBounds.size];
+    
     //update subviews' frames
     self.titleLabel.frame = self.titleFrame;
     self.statusLabel.frame = self.statusFrame;
@@ -401,6 +428,57 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
                                                           cornerRadius:self.layer.cornerRadius];
     self.layer.shadowPath = shadowPath.CGPath;
+}
+
+- (CGSize)appearanceSizeFromCalculationSize:(CGSize)size
+{
+    switch (self.sizeMode) {
+        case MMHUDSizeModeDefault:
+            return size;
+            
+        case MMHUDSizeModeConstantSize:
+            return self.size;
+        
+        case MMHUDSizeModeMinSize:
+        {
+            CGSize minSize = self.size;
+            size.width = MAX(size.width, minSize.width);
+            size.height = MAX(size.height, minSize.height);
+            return size;
+        }
+    }
+}
+
+- (void)adjustLayoutByAppearanceWithFinalSize:(CGSize)finalSize
+{
+    CGFloat contentHeight = CGRectGetHeight(self.titleFrame) + CGRectGetHeight(self.contentAreaFrame) + CGRectGetHeight(self.statusFrame);
+    
+    NSInteger paddingZoneCount = 4;
+    CGFloat padding = (finalSize.height - contentHeight) / paddingZoneCount;
+    
+    CGFloat centerX = finalSize.width / 2 + MMProgressHUDContentPadding;
+    
+    CGFloat top = padding;
+    
+    self.titleFrame = [self createFrameWithCenter:CGPointMake(centerX, top + CGRectGetHeight(self.titleFrame)/2)
+                                        fromFrame:self.titleFrame];
+    top += CGRectGetHeight(self.titleFrame) + padding;
+    self.contentAreaFrame = [self createFrameWithCenter:CGPointMake(centerX, top + CGRectGetHeight(self.contentAreaFrame)/2) fromFrame:self.contentAreaFrame];
+    top += CGRectGetHeight(self.contentAreaFrame) + padding;
+    self.statusFrame = [self createFrameWithCenter:CGPointMake(centerX, top + CGRectGetHeight(self.statusFrame)/2)
+                                         fromFrame:self.statusFrame];
+    
+    self.titleFrame = CGRectOffset(self.titleFrame, self.titleOffset.x, self.titleOffset.y);
+    self.contentAreaFrame = CGRectOffset(self.contentAreaFrame, self.middleAreaOffset.x, self.middleAreaOffset.y);
+    self.statusFrame = CGRectOffset(self.statusFrame, self.statusOffset.x, self.statusOffset.y);
+}
+
+- (CGRect)createFrameWithCenter:(CGPoint)point fromFrame:(CGRect)frame
+{
+    CGFloat width = CGRectGetWidth(frame);
+    CGFloat height = CGRectGetHeight(frame);
+    
+    return CGRectMake(point.x-width/2, point.y-height/2, width, height);
 }
 
 #pragma mark - Updating Content
@@ -700,6 +778,7 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
         
         _activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         _activityIndicator.hidesWhenStopped = YES;
+        _activityIndicator.color = [UIColor whiteColor];
     }
     return _activityIndicator;
 }
@@ -811,5 +890,6 @@ NSString * const MMProgressHUDFontNameNormal = @"HelveticaNeue-Light";
     self.completionState = MMProgressHUDCompletionStateNone;
     self.visible = NO;
 }
+
 
 @end

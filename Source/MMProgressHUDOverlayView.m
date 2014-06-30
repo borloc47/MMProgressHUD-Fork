@@ -8,6 +8,10 @@
 
 #import "MMProgressHUDOverlayView.h"
 
+#import "UIView+MMSnapshot.h"
+#import "UIImage+ImageEffects.h"
+#import "MMProgressHUDWindow.h"
+
 @interface MMProgressHUDOverlayView()
 
 @property (nonatomic) CGGradientRef gradientRef;
@@ -36,8 +40,8 @@
 - (instancetype)initWithFrame:(CGRect)frame overlayMode:(MMProgressHUDWindowOverlayMode)overlayMode {
     self = [super initWithFrame:frame];
     if (self) {
-        _overlayMode = overlayMode;
-        
+        [self setOverlayMode:overlayMode];
+
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         CGFloat r = 0/255.0;
         CGFloat g = 0/255.0;
@@ -62,15 +66,16 @@
         case MMProgressHUDWindowOverlayModeGradient:
             [self _drawRadialGradientInRect:rect];
             break;
-        /*case MMProgressHUDWindowOverlayModeBlur:
-//            NSAssert(NO, @"Blur overlay not yet implemented!");
-            break;*/
-        case MMProgressHUDWindowOverlayModeNone:
-            //draw nothing
-            break;
-        case MMProgressHUDWindowOverlayModeLinear:{
+
+        case MMProgressHUDWindowOverlayModeLinear:
             [self _drawLinearOverlayInRect:rect];
-        }
+            break;
+
+        case MMProgressHUDWindowOverlayModeBlur:
+            [self _renderBlurInRect:rect];
+            break;
+
+        default:
             break;
     }
 }
@@ -153,18 +158,30 @@
     CGContextRestoreGState(context);
 }
 
+- (void)_renderBlurInRect:(CGRect)rect {
+    MMProgressHUDWindow *window = (MMProgressHUDWindow *)self.window;
+    NSParameterAssert([window isKindOfClass:MMProgressHUDWindow.class]);
+
+    UIImage *snapshot = [window.oldWindow mm_snapshot];
+    UIImage *bluredSnapshot = [snapshot mm_applyBlurWithRadius:5.f
+                                                     tintColor:[UIColor colorWithCGColor:_overlayColor]
+                                         saturationDeltaFactor:1.8 maskImage:nil];
+
+    [bluredSnapshot drawInRect:rect];
+}
+
 - (void)setOverlayMode:(MMProgressHUDWindowOverlayMode)overlayMode {
     if (_overlayMode != overlayMode) {
         _overlayMode = overlayMode;
     }
-    
+
     [self setNeedsDisplay];
 }
 
 - (void)setOverlayColor:(CGColorRef)overlayColor {
     CGColorRelease(_overlayColor);
     _overlayColor = CGColorCreateCopy(overlayColor);
-    
+
     [self _buildGradient];
     [self setNeedsDisplay];
 }
